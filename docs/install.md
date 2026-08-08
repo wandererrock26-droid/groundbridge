@@ -5,8 +5,8 @@
 Проще всего — клонировать с GitHub прямо на Pi:
 
 ```bash
-git clone https://github.com/wandererrock26-droid/groundbridge.git
-cd groundbridge
+git clone https://github.com/wandererrock26-droid/roverlink.git
+cd roverlink
 ```
 
 Либо залить по scp со своего компьютера (SSH на Pi должен быть включён —
@@ -14,9 +14,9 @@ cd groundbridge
 прошивке карты):
 
 ```bash
-scp -r groundbridge pi@raspberrypi.local:~/
+scp -r roverlink pi@raspberrypi.local:~/
 # или по IP, если .local не резолвится:
-scp -r groundbridge pi@192.168.1.50:~/
+scp -r roverlink pi@192.168.1.50:~/
 ```
 
 Либо автоматическими скриптами (сами проверяют SSH, исключают venv/pycache и
@@ -39,7 +39,7 @@ scp -r groundbridge pi@192.168.1.50:~/
 ## 1. Автоматическая установка (рекомендуется)
 
 ```bash
-cd groundbridge
+cd roverlink
 chmod +x install.sh
 ./install.sh
 ```
@@ -57,9 +57,9 @@ chmod +x install.sh
 - устанавливает **ZeroTier** и узкие sudoers-правила для root-хелперов
   (см. [security.md](security.md));
 - выставляет регион WiFi (RU по умолчанию), снимает rfkill-блокировку и
-  поднимает **WiFi-точку доступа** GroundBridge (см. [wifi-ap.md](wifi-ap.md));
+  поднимает **WiFi-точку доступа** RoverLink (см. [wifi-ap.md](wifi-ap.md));
 - добавляет пользователя в группы `dialout`, `input`, `video`;
-- устанавливает systemd-сервис `groundbridge`;
+- устанавливает systemd-сервис `roverlink`;
 - открывает порты в ufw, если он активен.
 
 Полезные флаги:
@@ -68,10 +68,10 @@ chmod +x install.sh
 ./install.sh --yes                 # без вопросов
 ./install.sh --uart uart3          # другой overlay для CRSF-UART
 ./install.sh --sbus-uart uart3     # настроить ВТОРОЙ UART под SBUS (см. docs/sbus.md)
-./install.sh --dir /opt/groundbridge
+./install.sh --dir /opt/roverlink
 ./install.sh --wifi-ssid "MyDrone" --wifi-password "пароль-от-8-символов"
                                    # свои SSID/пароль точки доступа (по умолчанию AP
-                                   # поднимается и так: groundbridge/groundbridge —
+                                   # поднимается и так: roverlink/roverlink —
                                    # см. docs/wifi-ap.md, смени пароль из панели!)
 ./install.sh --no-wifi-ap          # не настраивать точку доступа
 ./install.sh --no-reboot
@@ -81,11 +81,71 @@ chmod +x install.sh
 
 ```bash
 sudo reboot                          # применить UART и группы доступа
-sudo systemctl start groundbridge
-sudo systemctl status groundbridge
+sudo systemctl start roverlink
+sudo systemctl status roverlink
 ```
 
-Веб-панель: `http://<IP_Pi>:8080`. Логи: `journalctl -u groundbridge -f`.
+Веб-панель: `http://<IP_Pi>:8080`. Логи: `journalctl -u roverlink -f`.
+
+Пароль входа в панель из коробки — **`roverlink`**. Он не секрет: нужен
+только чтобы свежая установка сразу открывалась. **Смени его при первом
+входе:** «Система» → «Пароль веб-панели». Подробности и сброс забытого
+пароля — в [security.md](security.md).
+
+## 1a. Обновление на новую версию
+
+Распаковка архива заменяет только файлы проекта — зависимости, права на
+скрипты и повторное усиление делает `tools/update.sh`:
+
+```bash
+cd ~ && unzip -o roverlink-vX.Y.zip
+cd ~/roverlink && ./tools/update.sh
+```
+
+Скрипт доустановит новые Python-зависимости, при необходимости повторно
+применит `harden.sh`, перезапустит сервис и покажет статус. Личные настройки
+(`config.yaml`, `data/` с ключом активации и настройками панели) не
+затрагиваются.
+
+После обновления в браузере нажми **Ctrl+F5** — иначе панель подхватит
+старый кэш стилей и скриптов.
+
+## 1b. Переезд со старого имени (GroundBridge → RoverLink)
+
+До версии 2.0 проект назывался **GroundBridge**, ставился в `~/groundbridge`
+и работал сервисом `groundbridge`. Обычным `update.sh` это не обновляется:
+поменялись имена каталога, юнита systemd, sudoers-правил и хелперов в
+`/usr/local/bin`. Для переезда есть отдельный скрипт:
+
+```bash
+cd ~ && unzip -o roverlink-2.0-betaN.zip
+cd ~/roverlink && ./tools/migrate_from_groundbridge.sh
+./install.sh
+```
+
+Что делает `migrate_from_groundbridge.sh`:
+
+- переносит `config.yaml` и папку `data/` из `~/groundbridge` — **ключ
+  активации остаётся действительным** (он привязан к железу, а не к имени
+  проекта), вместе с ним переезжают пароль панели, failsafe, выбранный
+  режим и настройки ZeroTier;
+- останавливает, выключает и удаляет старый сервис `groundbridge`;
+- удаляет старые `/etc/sudoers.d/groundbridge-*` и
+  `/usr/local/bin/groundbridge-*.sh`;
+- переименовывает профиль WiFi-точки `groundbridge-ap` → `roverlink-ap`,
+  чтобы панель снова могла им управлять. **SSID и пароль самой сети не
+  меняются** — переподключаться к точке не нужно.
+
+Дальше `install.sh` собирает venv, юнит и правила уже под именем `roverlink`.
+Старый venv не переносится специально: внутри него зашиты абсолютные пути
+на прежний каталог, после переезда он бы просто не запустился.
+
+Старый каталог `~/groundbridge` скрипт **не удаляет** — это страховка.
+Убедился, что новая установка работает — удали сам:
+
+```bash
+rm -rf ~/groundbridge
+```
 
 ## 2. Настройка UART вручную (если не через install.sh)
 
@@ -156,8 +216,8 @@ python3 run.py --no-webapp
 `install.sh` делает это сам. Вручную:
 
 ```bash
-sudo cp systemd/groundbridge.service /etc/systemd/system/
-# поправь User= и пути в юните, если ставишь не в /home/pi/groundbridge
+sudo cp systemd/roverlink.service /etc/systemd/system/
+# поправь User= и пути в юните, если ставишь не в /home/pi/roverlink
 sudo systemctl daemon-reload
-sudo systemctl enable --now groundbridge
+sudo systemctl enable --now roverlink
 ```

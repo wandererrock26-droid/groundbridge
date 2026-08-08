@@ -37,7 +37,7 @@ failsafe реально настроен и делает что-то безоп�
 ## Диагностика
 
 ```bash
-sudo journalctl -u groundbridge -f | grep -i failsafe
+sudo journalctl -u roverlink -f | grep -i failsafe
 ```
 
 Смена состояния даёт одну из строк:

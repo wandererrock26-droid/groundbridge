@@ -16,7 +16,7 @@ WiFi-точку доступа — панель, MAVLink и видео дост�
 
 ```bash
 curl -fL https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js \
-  -o ~/groundbridge/webapp/static/socket.io.min.js
+  -o ~/roverlink/webapp/static/socket.io.min.js
 ```
 
 Без этого файла страница откроется, но «живая» часть (каналы, статусы)
@@ -29,9 +29,9 @@ curl -fL https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js
 - регуляторный регион WiFi (**RU** по умолчанию) и снятие программной
   блокировки rfkill применяются **всегда**, даже с `--no-wifi-ap` — без этого
   wlan0 может вообще не появиться в системе;
-- создаётся профиль NetworkManager `groundbridge-ap` с autoconnect — точка
+- создаётся профиль NetworkManager `roverlink-ap` с autoconnect — точка
   поднимается сама при каждой загрузке;
-- стандартные реквизиты: SSID **groundbridge**, пароль **groundbridge**.
+- стандартные реквизиты: SSID **roverlink**, пароль **roverlink**.
 
 > ⚠ **Обязательно смени стандартный пароль** после первого входа: панель →
 > «Система» → «WiFi точка доступа». Стандартный пароль знают все, кто читал
@@ -59,7 +59,7 @@ curl -fL https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js
 
 Вкладка «Система» → «WiFi точка доступа» → новые SSID/пароль → чекбокс
 подтверждения → «Сохранить и применить». Работает через узкий root-хелпер,
-который умеет менять **только** профиль `groundbridge-ap` (см.
+который умеет менять **только** профиль `roverlink-ap` (см.
 [security.md](security.md)). Применение занимает пару секунд, точка доступа
 на это время обрывается.
 
@@ -72,7 +72,7 @@ RTSP/WebRTC/HLS на нём же.
 ## Диагностика
 
 ```bash
-nmcli connection show                # есть ли профиль groundbridge-ap
+nmcli connection show                # есть ли профиль roverlink-ap
 nmcli connection show --active       # активен ли сейчас
 nmcli device status
 journalctl -u NetworkManager -f
@@ -80,4 +80,4 @@ journalctl -u NetworkManager -f
 
 Пересоздать с другими SSID/паролем — повторный запуск
 `install.sh --wifi-ssid ... --wifi-password ...` (идемпотентно).
-Удалить: `sudo nmcli connection delete groundbridge-ap`.
+Удалить: `sudo nmcli connection delete roverlink-ap`.

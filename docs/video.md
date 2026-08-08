@@ -81,7 +81,7 @@ H.264/H.265 (в MJPEG/copy перекодирования нет — налож�
 ```bash
 sudo systemctl status mediamtx
 sudo journalctl -u mediamtx -f
-sudo journalctl -u groundbridge -f   # здесь же логи ffmpeg
+sudo journalctl -u roverlink -f   # здесь же логи ffmpeg
 ```
 
 Частые проблемы:

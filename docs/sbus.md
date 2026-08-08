@@ -38,7 +38,7 @@ Raspberry Pi сам сигнал не инвертирует. Большинст
      port: "/dev/ttyAMA3"
      frame_rate_hz: 142
    ```
-4. `sudo systemctl restart groundbridge`.
+4. `sudo systemctl restart roverlink`.
 
 Если `sbus.enabled: false` — переключатель SBUS в панели задизейблен с
 пометкой «не настроен».

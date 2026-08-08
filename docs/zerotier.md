@@ -43,7 +43,7 @@ sudo zerotier-cli listnetworks
   (`curl -s https://install.zerotier.com | sudo bash`) и перезапусти сервис.
 - Статус завис на `REQUESTING_CONFIGURATION`/`ACCESS_DENIED` → устройство не
   авторизовано на my.zerotier.com (или авто-авторизация по токену не
-  сработала — смотри логи `journalctl -u groundbridge`).
+  сработала — смотри логи `journalctl -u roverlink`).
 
 Права: `zerotier-cli` требует root — панель вызывает его через узкое
 sudoers-правило NOPASSWD только на этот бинарник (см. [security.md](security.md)).
