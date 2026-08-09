@@ -1,16 +1,16 @@
 # RoverLink
 
 ![License: GPL-3.0](https://img.shields.io/badge/License-GPL--3.0-blue.svg)
-![Platform](https://img.shields.io/badge/Platform-Raspberry%20Pi%205-c51a4a.svg)
+![Platform](https://img.shields.io/badge/Platform-Raspberry%20Pi%204%20%2F%205-c51a4a.svg)
 ![Python](https://img.shields.io/badge/Python-3.11%2B-3776ab.svg)
 ![Protocols](https://img.shields.io/badge/MAVLink%20%E2%86%92%20CRSF%20%2F%20SBUS-34d399.svg)
 
-**Наземная станция управления беспилотной машиной на Raspberry Pi 5.
+**Наземная станция управления беспилотной машиной на Raspberry Pi 4 и 5.
 Два режима: виртуальный борт (Mission Planner / USB-джойстик → MAVLink →
 CRSF/SBUS → ESP32) и прозрачный ретранслятор MAVLink на полётный контроллер
 по USB. Плюс FPV-видео по RTSP и веб-панель управления.**
 
-Автор: **XAKER** · Версия: **2.0** · Лицензия: **GPL-3.0** — форки и
+Автор: **XAKER** · Версия: **2.1** · Лицензия: **GPL-3.0** — форки и
 доработки обязаны оставаться открытыми.
 
 > **До версии 2.0 проект назывался GroundBridge.** Сменилось только имя:
@@ -21,7 +21,7 @@ CRSF/SBUS → ESP32) и прозрачный ретранслятор MAVLink н
 ![Веб-панель RoverLink](docs/screenshots/panel-control.png)
 
 ```
-                       ┌────────────────────── Raspberry Pi 5 ──────────────────────┐
+                       ┌──────────────── Raspberry Pi 4 / Pi 5 ────────────────────┐
  Mission Planner ──UDP─►  MAVLink-источник ─┐                                       │
  (через LAN / ZeroTier)│                    ├─► арбитраж ─► CRSF ──UART─► ESP32     │
  USB-джойстик ─────────►  Joystick-источник ┘   каналов  └► SBUS ──UART─► второй FC │
@@ -34,6 +34,10 @@ CRSF/SBUS → ESP32) и прозрачный ретранслятор MAVLink н
 
 ## Возможности
 
+- **Одна сборка на Raspberry Pi 4 и Pi 5**: плата определяется при старте,
+  карта UART, номера пинов в подсказках и работа с вентилятором
+  подставляются сами. Провод распайки идёт на один и тот же физический
+  пин на обеих платах. См. [docs/boards.md](docs/boards.md).
 - **Два режима станции** (переключаются из панели, названия настраиваются):
   *виртуальный борт CRSF* — для машин с ESP32, и *прозрачный ретранслятор
   MAVLink по USB* — для машин с полноценным полётным контроллером (F405
@@ -69,6 +73,26 @@ CRSF/SBUS → ESP32) и прозрачный ретранслятор MAVLink н
 - **Клонирование на несколько устройств**: упаковка дампа и «де-клонирование»
   (сброс ZeroTier ID, SSH-ключей, machine-id) одной кнопкой из панели.
 
+## Видеомануал
+
+Два ролика с озвучкой: интерфейс в них настоящий, данные — вымышленные.
+
+[![Быстрый старт](docs/video/poster-quickstart.png)](../../releases/latest/download/roverlink-2.0-quickstart.mp4)
+
+**[Быстрый старт — 4:57](../../releases/latest/download/roverlink-2.0-quickstart.mp4)** ·
+вход в панель, выбор режима, подключение железа, источники и живые каналы,
+Mission Planner, выход CRSF, failsafe, смена пароля.
+
+[![Полный видеомануал](docs/video/poster-full.png)](../../releases/latest/download/roverlink-2.0-full-manual.mp4)
+
+**[Полный видеомануал — 16:37](../../releases/latest/download/roverlink-2.0-full-manual.mp4)** ·
+семь глав: активация, вход, вкладка «Управление» целиком, режим с полётным
+контроллером, failsafe, видео, ZeroTier и система.
+
+Ролики лежат в [релизах](../../releases/latest) — кликни по картинке, чтобы
+скачать. Субтитры: [быстрый старт](docs/video/roverlink-2.0-quickstart.srt),
+[полный мануал](docs/video/roverlink-2.0-full-manual.srt).
+
 ## Скриншоты
 
 | Режим с полётным контроллером | Видео |
@@ -87,7 +111,7 @@ CRSF/SBUS → ESP32) и прозрачный ретранслятор MAVLink н
 
 | Компонент | Назначение |
 |---|---|
-| Raspberry Pi 5 | мозг станции; нужны 1–2 свободных UART (dtoverlay) |
+| Raspberry Pi 5 или Pi 4 | мозг станции; нужны 1–2 свободных UART (dtoverlay) |
 | ESP32 на машине | приём CRSF по UART (3.3V, общий GND) |
 | USB-плата захвата (UVC) | оцифровка аналогового FPV-видео |
 | USB-джойстик / пульт в режиме USB Joystick | резервное прямое управление |
@@ -112,6 +136,7 @@ RoverLink развивается по двухветочной модели (с�
 | Раздел | Описание |
 |---|---|
 | [docs/install.md](docs/install.md) | установка, UART, джойстик, systemd |
+| [docs/boards.md](docs/boards.md) | различия Raspberry Pi 4 и Pi 5: UART, пины, вентилятор, кодеки |
 | [docs/modes.md](docs/modes.md) | режимы станции: CRSF-борт и ретранслятор MAVLink по USB |
 | [docs/licensing.md](docs/licensing.md) | модель лицензирования: OSS-ядро + коммерческая ветка с активацией |
 | [docs/mission-planner.md](docs/mission-planner.md) | подключение Mission Planner по сети |
