@@ -81,3 +81,84 @@ journalctl -u NetworkManager -f
 Пересоздать с другими SSID/паролем — повторный запуск
 `install.sh --wifi-ssid ... --wifi-password ...` (идемпотентно).
 Удалить: `sudo nmcli connection delete roverlink-ap`.
+
+## Точка доступа работает на hostapd, а не на NetworkManager
+
+Это не вопрос вкуса. Встроенный «хотспот» NetworkManager поднимает точку
+через `wpa_supplicant`, а тот в режиме AP всегда объявляет в эфир поддержку
+**WPS**. Windows видит это объявление и вместо поля пароля показывает ввод
+PIN-кода «с наклейки роутера», которой у станции нет. Выключить WPS у
+NetworkManager нечем: настройки нет, а глобальный `wps_disabled` до его
+экземпляра supplicant не доходит.
+
+Проверено на живой Pi 5: та же сеть, тот же ноутбук, профиль сети удалён
+перед каждой попыткой. Через NetworkManager Windows просит PIN, через
+`hostapd` — пароль. `hostapd` без явной настройки WPS не объявляет вовсе,
+и в дампе его маяка из вендорных блоков есть только WMM.
+
+Побочная выгода: явный канал, явный регуляторный регион и одинаковое
+поведение на всех трёх платах.
+
+### Как это устроено
+
+Установщик поднимает точку сам, но если нужно вручную:
+
+```bash
+cd ~/roverlink
+sudo ./scripts/wifi_ap_hostapd.sh --apply --ssid roverlink --password roverlink
+```
+
+Создаются только свои файлы, чужое не трогается:
+
+| Файл | Назначение |
+|---|---|
+| `/etc/roverlink/hostapd.conf` | конфиг точки доступа |
+| `/etc/roverlink/dnsmasq-ap.conf` | выдача адресов клиентам |
+| `/etc/systemd/system/roverlink-ap.service` | сама точка (автозапуск) |
+| `/etc/systemd/system/roverlink-ap-dhcp.service` | отдельный экземпляр dnsmasq |
+| `/etc/NetworkManager/conf.d/99-roverlink-ap.conf` | NM не трогает беспроводной интерфейс |
+
+Адрес станции для клиентов — `10.42.0.1`, пул выдачи `10.42.0.10–200`.
+Раздача интернета клиентам включается через masquerade; отключить —
+флаг `--no-nat`.
+
+Посмотреть состояние и вернуться на NetworkManager:
+
+```bash
+sudo ./scripts/wifi_ap_hostapd.sh --status
+sudo ./scripts/wifi_ap_hostapd.sh --revert
+```
+
+После отката запрос PIN в Windows вернётся — он идёт от `wpa_supplicant`.
+
+### Если сеть уже была в списке на клиенте
+
+Windows запоминает профиль сети по SSID. После перевода точки на hostapd
+имя сети то же самое, и клиент может подключаться по старому профилю.
+Проще всего забыть сеть и подключиться заново:
+
+```powershell
+netsh wlan delete profile name="roverlink"
+```
+
+### Диагностика
+
+```bash
+systemctl status roverlink-ap
+journalctl -u roverlink-ap -n 40
+sudo /usr/sbin/iw dev wlan0 info      # должно быть type AP
+```
+
+Ловушка, на которую легко наступить: если поиграть с `hostapd` руками, а
+потом вернуть точку на NetworkManager, интерфейс остаётся в режиме `AP` и
+`unmanaged`, и NM его не заберёт. Лечится возвратом в клиентский режим:
+
+```bash
+sudo ip link set wlan0 down
+sudo iw dev wlan0 set type managed
+sudo ip link set wlan0 up
+sudo nmcli device set wlan0 managed yes
+```
+
+Самый надёжный способ вернуться в известное состояние — перезагрузка:
+всё временное её не переживает.

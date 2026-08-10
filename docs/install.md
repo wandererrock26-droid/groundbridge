@@ -1,8 +1,21 @@
 # Установка
 
-## 0. Доставка проекта на Raspberry Pi
+Один установщик на все поддержанные платы: **Raspberry Pi 5**, **Raspberry
+Pi 4** и **Radxa ROCK 5C**. Плату он определяет сам и от неё выбирает, какой
+UART поднять и каким способом, какой порт вписать в конфиг и какие пакеты
+доставить. Отдельных инструкций под каждую плату нет — различия описаны в
+[boards.md](boards.md), но знать их для установки не требуется.
 
-Проще всего — клонировать с GitHub прямо на Pi:
+Сборки раздаются в `.tar.gz` — распаковка одинаковая на всех платах, и
+права на файлы сохраняются, так что возвращать `chmod +x` скриптам не нужно:
+
+```bash
+cd ~/roverlink && tar -xzf ~/roverlink-<версия>.tar.gz
+```
+
+## 0. Доставка проекта на плату
+
+Проще всего — клонировать с GitHub прямо на плату:
 
 ```bash
 git clone https://github.com/wandererrock26-droid/roverlink.git
@@ -46,7 +59,7 @@ chmod +x install.sh
 
 Скрипт идемпотентен (можно запускать повторно) и делает всё сам:
 
-- ставит системные пакеты (python3-venv, joystick, ffmpeg, v4l-utils,
+- ставит системные пакеты (python3-venv, ffmpeg, v4l-utils,
   libsdl2, шрифты для OSD);
 - создаёт `config.yaml` из шаблона `config.example.yaml` (при первом запуске);
 - создаёт venv и ставит Python-зависимости;
@@ -158,7 +171,8 @@ dtoverlay=uart2
 
 Затем `sudo raspi-config` → Interface Options → Serial Port:
 login shell — **No**, serial hardware — **Yes**. Перезагрузись и проверь
-устройство: `ls /dev/ttyAMA*` (для `uart2` на Pi 5 обычно `/dev/ttyAMA2` —
+устройство: `ls /dev/ttyAMA*` на Raspberry или `ls /dev/ttyS*` на Radxa
+(для `uart2` на Pi 5 обычно `/dev/ttyAMA2` —
 впиши фактическое в `config.yaml` → `uart.port`).
 
 Подключение к ESP32 (**общий GND обязателен**; уровни 3.3V совпадают,
@@ -169,38 +183,6 @@ Pi GPIO TXD (uart2)  ---> ESP32 RX
 Pi GPIO RXD (uart2)  <--- ESP32 TX   (нужен только для телеметрии обратно)
 Pi GND               ---  ESP32 GND
 ```
-
-## 3. Джойстик (пульт в режиме USB Joystick)
-
-На пульте включи режим USB Joystick (например, на Radiomaster TX12:
-`SYS → USB Joystick`). Подключи к Pi и проверь:
-
-```bash
-jstest /dev/input/js0
-```
-
-Если оси откликаются — поправь при необходимости `axis_map`/`invert` в
-`config.yaml` под свою раскладку (4 основных канала: roll/pitch/throttle/yaw).
-
-### Тумблеры и кнопки (каналы 5–16)
-
-По умолчанию читаются только 4 стика. Тумблеры/кнопки пульта в режиме USB
-Joystick приходят как pygame-кнопки — назначь их на каналы через гибкий
-микшер `mixes` в `config.yaml` (секция `joystick`):
-
-```yaml
-joystick:
-  mixes:
-    - {channel: 0, source_type: axis,   source_index: 0, invert: false}  # Roll
-    - {channel: 1, source_type: axis,   source_index: 1, invert: false}  # Pitch
-    - {channel: 2, source_type: axis,   source_index: 2, invert: false}  # Throttle
-    - {channel: 3, source_type: axis,   source_index: 3, invert: false}  # Yaw
-    - {channel: 4, source_type: button, source_index: 0, invert: false}  # Arm
-    - {channel: 5, source_type: button, source_index: 1, invert: false}  # Режим
-```
-
-Если `mixes` задан — он используется **вместо** `axis_map`/`invert`.
-Номера осей/кнопок показывает `jstest` (кнопки — отдельной строкой).
 
 ## 4. Ручной запуск (без systemd)
 
