@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="320" viewBox="0 0 1000 320" role="img" aria-label="RoverLink — Ground Control Station for UGVs">
+  <defs>
+    <linearGradient id="rbg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0c140d"/>
+      <stop offset="1" stop-color="#0d1117"/>
+    </linearGradient>
+    <pattern id="rgrid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1c2a1c" stroke-width="1"/>
+    </pattern>
+    <linearGradient id="rtitle" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#4ade80"/>
+      <stop offset="1" stop-color="#22c55e"/>
+    </linearGradient>
+  </defs>
+
+  <!-- background + frame -->
+  <rect width="1000" height="320" fill="url(#rbg)"/>
+  <rect width="1000" height="320" fill="url(#rgrid)"/>
+  <rect x="3" y="3" width="994" height="314" fill="none" stroke="#22c55e" stroke-width="2" opacity="0.55" rx="10"/>
+
+  <!-- corner brackets -->
+  <g stroke="#22c55e" stroke-width="3" fill="none">
+    <path d="M 16 40 L 16 16 L 40 16"/>
+    <path d="M 960 16 L 984 16 L 984 40"/>
+    <path d="M 984 280 L 984 304 L 960 304"/>
+    <path d="M 40 304 L 16 304 L 16 280"/>
+  </g>
+
+  <!-- label top -->
+  <g font-family="'Courier New', Courier, monospace">
+    <rect x="56" y="34" width="330" height="30" fill="#22c55e" opacity="0.12" rx="4"/>
+    <text x="70" y="55" font-size="16" fill="#4ade80" letter-spacing="3">★ FLAGSHIP PROJECT</text>
+  </g>
+
+  <!-- title -->
+  <g font-family="'Courier New', Courier, monospace">
+    <text x="64" y="128" font-size="58" font-weight="bold" letter-spacing="2">
+      <tspan fill="#e6edf3">ROVER</tspan><tspan fill="url(#rtitle)">LINK</tspan>
+    </text>
+    <text x="66" y="164" font-size="19" fill="#22c55e" letter-spacing="2">GROUND CONTROL STATION FOR UNMANNED VEHICLES</text>
+    <text x="66" y="192" font-size="15" fill="#7d8590" letter-spacing="1">Наземная станция управления беспилотной машиной</text>
+  </g>
+
+  <!-- feature chips -->
+  <g font-family="'Courier New', Courier, monospace" font-size="13">
+    <rect x="64" y="212" width="132" height="26" rx="13" fill="none" stroke="#2ea043"/>
+    <text x="130" y="229" fill="#4ade80" text-anchor="middle">MAVLINK · CRSF</text>
+    <rect x="206" y="212" width="112" height="26" rx="13" fill="none" stroke="#2ea043"/>
+    <text x="262" y="229" fill="#4ade80" text-anchor="middle">RTSP VIDEO</text>
+    <rect x="328" y="212" width="130" height="26" rx="13" fill="none" stroke="#2ea043"/>
+    <text x="393" y="229" fill="#4ade80" text-anchor="middle">WEB TELEMETRY</text>
+    <rect x="468" y="212" width="128" height="26" rx="13" fill="none" stroke="#f59e0b" opacity="0.9"/>
+    <text x="532" y="229" fill="#f59e0b" text-anchor="middle">RPi · ROCK 5C</text>
+  </g>
+
+  <!-- CTA -->
+  <g font-family="'Courier New', Courier, monospace">
+    <rect x="64" y="258" width="290" height="38" rx="6" fill="#22c55e"/>
+    <text x="209" y="283" font-size="17" font-weight="bold" fill="#06120a" text-anchor="middle" letter-spacing="2">&gt; OPEN REPOSITORY_</text>
+    <text x="380" y="283" font-size="14" fill="#7d8590" letter-spacing="1">GPL-3.0 · v2.2 · Python 3.11+</text>
+  </g>
+
+  <!-- rover + radar scene right -->
+  <g transform="translate(790,150)">
+    <circle r="120" fill="none" stroke="#1f3d26" stroke-width="1.5"/>
+    <circle r="84" fill="none" stroke="#1f3d26" stroke-width="1.2"/>
+    <circle r="48" fill="none" stroke="#1f3d26" stroke-width="1"/>
+    <g>
+      <path d="M 0 0 L 120 0 A 120 120 0 0 0 84.8 -84.8 Z" fill="#22c55e" opacity="0.1"/>
+      <line x1="0" y1="0" x2="120" y2="0" stroke="#22c55e" stroke-width="1.5" opacity="0.7"/>
+      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="7s" repeatCount="indefinite"/>
+    </g>
+    <circle cx="52" cy="-38" r="4" fill="#22c55e">
+      <animate attributeName="opacity" values="1;0.15;1" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="-60" cy="44" r="3.5" fill="#f59e0b">
+      <animate attributeName="opacity" values="0.2;1;0.2" dur="3s" repeatCount="indefinite"/>
+    </circle>
+
+    <!-- rover in center -->
+    <g transform="translate(-46,-8)" stroke="#4ade80" stroke-width="2.5" fill="none">
+      <rect x="0" y="0" width="92" height="26" rx="5"/>
+      <circle cx="17" cy="34" r="11"/>
+      <circle cx="46" cy="34" r="11"/>
+      <circle cx="75" cy="34" r="11"/>
+      <circle cx="17" cy="34" r="3.5" fill="#4ade80" stroke="none"/>
+      <circle cx="46" cy="34" r="3.5" fill="#4ade80" stroke="none"/>
+      <circle cx="75" cy="34" r="3.5" fill="#4ade80" stroke="none"/>
+      <line x1="46" y1="0" x2="46" y2="-20"/>
+      <circle cx="46" cy="-23" r="3.5" fill="#22c55e" stroke="none">
+        <animate attributeName="opacity" values="1;0.2;1" dur="1.6s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+  </g>
+
+  <!-- bottom status -->
+  <g font-family="'Courier New', Courier, monospace" font-size="12" fill="#7d8590">
+    <text x="620" y="296" letter-spacing="1">STATUS:</text>
+    <text x="688" y="296" letter-spacing="1" fill="#22c55e">ACTIVE DEVELOPMENT</text>
+    <circle cx="850" cy="292" r="4" fill="#22c55e">
+      <animate attributeName="opacity" values="1;0.2;1" dur="1.2s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+</svg>

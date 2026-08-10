@@ -18,7 +18,7 @@ cd ~/roverlink && tar -xzf ~/roverlink-<версия>.tar.gz
 Проще всего — клонировать с GitHub прямо на плату:
 
 ```bash
-git clone https://github.com/wandererrock26-droid/roverlink.git
+git clone https://github.com/xaker-enginer/roverlink.git
 cd roverlink
 ```
 
