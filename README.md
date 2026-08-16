@@ -13,14 +13,14 @@
 │  > platforms                                                 │
 │  Raspberry Pi 5 · Raspberry Pi 4 · Radxa ROCK 5C             │
 │  > status                                                    │
-│  ● v2.4-beta5 — IN TESTING — LINK SECURE                     │
+│  ● v2.4 — RELEASED — LINK SECURE                             │
 └──────────────────────────────────────────────────────────────┘
 ```
 
 <div align="center">
 
 [![License](https://img.shields.io/badge/LICENSE-GPL--3.0-0d1117?style=for-the-badge&logo=gnu&logoColor=f59e0b&labelColor=161b22&color=f59e0b)](LICENSE)
-![Version](https://img.shields.io/badge/CORE-v2.4--beta5-0d1117?style=for-the-badge&labelColor=161b22&color=f59e0b)
+![Version](https://img.shields.io/badge/CORE-v2.4-0d1117?style=for-the-badge&labelColor=161b22&color=4ade80)
 ![Platform](https://img.shields.io/badge/SBC-Pi_5_%C2%B7_Pi_4_%C2%B7_ROCK_5C-0d1117?style=for-the-badge&labelColor=161b22&color=22c55e)
 ![Python](https://img.shields.io/badge/Python_3.11%2B-0d1117?style=for-the-badge&logo=python&logoColor=4ade80&labelColor=161b22)
 ![Protocols](https://img.shields.io/badge/MAVLink_%E2%86%92_CRSF_%2F_SBUS-0d1117?style=for-the-badge&labelColor=161b22&color=22c55e)
@@ -60,14 +60,14 @@
 | **Выходы** | CRSF 420000/400000 бод и SBUS — одновременно, каждый на своём UART |
 | **НРТК** | Богомол B5 · Антилопа (4×4 мотор-колёса) |
 | **Режимы** | виртуальный борт для машин с ESP32 · прозрачный мост к полётному контроллеру · собственный протокол «Антилопы» |
-| **Видео** | USB-плата захвата или IP-камера → RTSP/WebRTC/HLS, OSD, плеер в панели |
-| **Связь** | WiFi-точка доступа станции, LAN, ZeroTier |
+| **Видео** | USB-плата захвата или IP-камера → RTSP/WebRTC/HLS, проброс без обработки, OSD |
+| **Связь** | WiFi-точка доступа станции, LAN, меш AYAKS, ZeroTier |
 | **Панель** | русский интерфейс, тёмная тема, работает офлайн, вход по паролю |
 
-## `▌ WHAT'S NEW // ЧТО НОВОГО В 2.4 · BETA`
+## `▌ WHAT'S NEW // ЧТО НОВОГО В 2.4`
 
-> Ветка в полевых испытаниях: обкатывается на «Антилопе». Функции рабочие,
-> номер держится бетой до окончания апробации.
+> Ветка выросла из апробации машины в поле: почти каждый пункт здесь — ответ
+> на то, что вылезло на испытаниях, а не задумка за столом.
 
 **Сеть настраивается из панели.** Отдельная вкладка «Сеть»: DHCP или статика
 на каждый интерфейс, смена адресов на лету — с обратным отсчётом и
@@ -89,6 +89,26 @@ USB-адаптер всегда `eth1` — это правило udev, а не �
 пакеты сверяются локально, Python-зависимости — импортом, скачивания честно
 пропускаются с объяснением. На машине без сети — а в меше её нет — установка
 проходит целиком.
+
+**Управление с геймпада — движение рядом с машиной пешком.** DualSense по
+Bluetooth: пара переживает перезагрузку, пад цепляется кнопкой PS, поиск и
+подключение — прямо из панели. В основе **мёртвая рука**: движение разрешено
+только пока удержан триггер, отпустил — газ в ноль и экстренный мотор-тормоз,
+выронил пад — штатный failsafe. Разворот на месте, стояночный тормоз и ручной
+экстренный на кнопках; проценты передач правятся на лету, у геймпада свой
+потолок мощности. См. [docs/gamepad.md](docs/gamepad.md).
+
+**Меш и сканер подсетей.** Вкладка «Меш» показывает качество линка, соседей,
+шум и скорости меш-модема рядом с телеметрией машины — только чтение, менять
+радиопараметры модема, через который идёт связь с машиной, из панели нельзя.
+Рядом — сканер подсетей: кто занимает адреса и чем именно, а главное,
+**конфликт адресов** отдельным блоком. В меше все устройства оказываются в
+одной подсети, и совпадение адреса рвёт связь без видимой причины.
+
+**Веб-морда камеры — оператору.** Камера за вторым сетевиком живёт в своей
+подсети, и ноутбук оператора до неё не достаёт. Станция перекидывает её
+веб-порт на себя: `http://<станция>:8081`. Адрес берётся из ссылки RTSP —
+работает на любой машине с любой камерой без настройки.
 
 **Видео больше не рвётся.** Наблюдатель перестал опрашивать камеру во время
 трансляции: этот опрос рвал сессию дешёвых RTSP-камер и ронял поток каждые
@@ -275,6 +295,8 @@ RoverLink развивается по двухветочной модели (с�
 | [docs/failsafe.md](docs/failsafe.md) | поведение при потере сигнала — прочти до первого выезда |
 | [docs/video.md](docs/video.md) | видео: захват, RTSP, проброс без обработки, OSD, GStreamer |
 | [docs/network.md](docs/network.md) | сетевые адреса из панели: DHCP/статика, имена плат, авто-откат |
+| [docs/gamepad.md](docs/gamepad.md) | управление с геймпада: мёртвая рука, раскладка, пара по Bluetooth |
+| [docs/ayaks-mesh.md](docs/ayaks-mesh.md) | меш AYAKS: состояние линка, сканер подсетей, конфликт адресов |
 | [docs/zerotier.md](docs/zerotier.md) | удалённый доступ через ZeroTier |
 | [docs/sbus.md](docs/sbus.md) | второй выход SBUS и режимы CRSF |
 | [docs/wifi-ap.md](docs/wifi-ap.md) | WiFi-точка доступа, работа в поле |
@@ -338,7 +360,7 @@ GPL-3.0 — см. [LICENSE](LICENSE). Используя, модифицируя
 
 <div align="center">
 
-[![Telegram](https://img.shields.io/badge/TELEGRAM-@drmitry__haker-0d1117?style=for-the-badge&logo=telegram&logoColor=26A5E4&labelColor=161b22&color=26A5E4)](https://t.me/drmitry_haker)
+[![Telegram](https://img.shields.io/badge/TELEGRAM-@dmitry__haker-0d1117?style=for-the-badge&logo=telegram&logoColor=26A5E4&labelColor=161b22&color=26A5E4)](https://t.me/dmitry_haker)
 [![Email](https://img.shields.io/badge/EMAIL-dmitry@hauger--it.com-0d1117?style=for-the-badge&logo=gmail&logoColor=f59e0b&labelColor=161b22&color=f59e0b)](mailto:dmitry@hauger-it.com)
 [![Author](https://img.shields.io/badge/GITHUB-xaker--enginer-0d1117?style=for-the-badge&logo=github&logoColor=22c55e&labelColor=161b22&color=22c55e)](https://github.com/xaker-enginer)
 
