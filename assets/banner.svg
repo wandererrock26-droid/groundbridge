@@ -1,83 +1,142 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="320" viewBox="0 0 1000 320" role="img" aria-label="RoverLink — Ground Control Station for UGVs">
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="340" viewBox="0 0 1000 340" role="img" aria-label="RoverLink — Ground Control Station for UGVs">
   <defs>
-    <linearGradient id="rbg" x1="0" y1="0" x2="0" y2="1">
+    <linearGradient id="rbg" x1="0" y1="0" x2="0.35" y2="1">
       <stop offset="0" stop-color="#0c140d"/>
       <stop offset="1" stop-color="#0d1117"/>
     </linearGradient>
     <pattern id="rgrid" width="40" height="40" patternUnits="userSpaceOnUse">
       <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1c2a1c" stroke-width="1"/>
     </pattern>
+    <pattern id="rscan" width="4" height="4" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="0" x2="4" y2="0" stroke="#000000" stroke-width="1" opacity="0.25"/>
+    </pattern>
+    <radialGradient id="rvig" cx="0.28" cy="0.4" r="0.85">
+      <stop offset="0" stop-color="#22c55e" stop-opacity="0.10"/>
+      <stop offset="1" stop-color="#000000" stop-opacity="0.55"/>
+    </radialGradient>
     <linearGradient id="rtitle" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0" stop-color="#4ade80"/>
       <stop offset="1" stop-color="#22c55e"/>
     </linearGradient>
+    <linearGradient id="rsweep" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#22c55e" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#22c55e" stop-opacity="0"/>
+    </linearGradient>
   </defs>
 
-  <!-- background + frame -->
-  <rect width="1000" height="320" fill="url(#rbg)"/>
-  <rect width="1000" height="320" fill="url(#rgrid)"/>
-  <rect x="3" y="3" width="994" height="314" fill="none" stroke="#22c55e" stroke-width="2" opacity="0.55" rx="10"/>
+  <!-- фон: сетка, виньетка, развёртка -->
+  <rect width="1000" height="340" fill="url(#rbg)"/>
+  <rect width="1000" height="340" fill="url(#rgrid)"/>
+  <rect width="1000" height="340" fill="url(#rvig)"/>
+  <rect width="1000" height="340" fill="url(#rscan)"/>
+  <rect x="3" y="3" width="994" height="334" fill="none" stroke="#22c55e" stroke-width="2" opacity="0.55" rx="10"/>
 
-  <!-- corner brackets -->
+  <!-- угловые скобки -->
   <g stroke="#22c55e" stroke-width="3" fill="none">
     <path d="M 16 40 L 16 16 L 40 16"/>
     <path d="M 960 16 L 984 16 L 984 40"/>
-    <path d="M 984 280 L 984 304 L 960 304"/>
-    <path d="M 40 304 L 16 304 L 16 280"/>
+    <path d="M 984 300 L 984 324 L 960 324"/>
+    <path d="M 40 324 L 16 324 L 16 300"/>
   </g>
 
-  <!-- label top -->
+  <!-- линейка по верхней кромке -->
+  <g stroke="#22c55e" stroke-width="1" opacity="0.35">
+    <line x1="120" y1="4" x2="120" y2="14"/><line x1="160" y1="4" x2="160" y2="10"/>
+    <line x1="200" y1="4" x2="200" y2="10"/><line x1="240" y1="4" x2="240" y2="14"/>
+    <line x1="280" y1="4" x2="280" y2="10"/><line x1="320" y1="4" x2="320" y2="10"/>
+    <line x1="360" y1="4" x2="360" y2="14"/><line x1="400" y1="4" x2="400" y2="10"/>
+    <line x1="440" y1="4" x2="440" y2="10"/><line x1="480" y1="4" x2="480" y2="14"/>
+  </g>
+
   <g font-family="'Courier New', Courier, monospace">
+    <!-- ярлык -->
     <rect x="56" y="34" width="330" height="30" fill="#22c55e" opacity="0.12" rx="4"/>
     <text x="70" y="55" font-size="16" fill="#4ade80" letter-spacing="3">★ FLAGSHIP PROJECT</text>
-  </g>
 
-  <!-- title -->
-  <g font-family="'Courier New', Courier, monospace">
-    <text x="64" y="128" font-size="58" font-weight="bold" letter-spacing="2">
+    <!-- версия. Проставляется скриптом tools/stamp-version.py, руками не править -->
+    <rect x="742" y="34" width="212" height="30" rx="4" fill="none" stroke="#22c55e" opacity="0.55"/>
+    <text x="756" y="55" font-size="15" fill="#7d8590" letter-spacing="2">CORE</text>
+    <text id="version" x="812" y="55" font-size="15" fill="#4ade80" letter-spacing="2" font-weight="bold">v2.5-beta8</text>
+    <text x="884" y="55" font-size="15" fill="#f59e0b" letter-spacing="2">GPL-3.0</text>
+
+    <!-- заголовок -->
+    <text x="64" y="130" font-size="58" font-weight="bold" letter-spacing="2">
       <tspan fill="#e6edf3">ROVER</tspan><tspan fill="url(#rtitle)">LINK</tspan>
     </text>
-    <text x="66" y="164" font-size="19" fill="#22c55e" letter-spacing="2">GROUND CONTROL STATION FOR UNMANNED VEHICLES</text>
-    <text x="66" y="192" font-size="15" fill="#7d8590" letter-spacing="1">Наземная станция управления беспилотной машиной</text>
+    <text x="66" y="166" font-size="19" fill="#22c55e" letter-spacing="2">GROUND CONTROL STATION FOR UNMANNED VEHICLES</text>
+    <text x="66" y="194" font-size="15" fill="#7d8590" letter-spacing="1">Наземная станция управления беспилотной машиной</text>
   </g>
 
-  <!-- feature chips -->
+  <!-- возможности -->
   <g font-family="'Courier New', Courier, monospace" font-size="13">
-    <rect x="64" y="212" width="132" height="26" rx="13" fill="none" stroke="#2ea043"/>
-    <text x="130" y="229" fill="#4ade80" text-anchor="middle">MAVLINK · CRSF</text>
-    <rect x="206" y="212" width="112" height="26" rx="13" fill="none" stroke="#2ea043"/>
-    <text x="262" y="229" fill="#4ade80" text-anchor="middle">RTSP VIDEO</text>
-    <rect x="328" y="212" width="130" height="26" rx="13" fill="none" stroke="#2ea043"/>
-    <text x="393" y="229" fill="#4ade80" text-anchor="middle">WEB TELEMETRY</text>
-    <rect x="468" y="212" width="128" height="26" rx="13" fill="none" stroke="#f59e0b" opacity="0.9"/>
-    <text x="532" y="229" fill="#f59e0b" text-anchor="middle">RPi · ROCK 5C</text>
+    <rect x="64" y="214" width="132" height="26" rx="13" fill="none" stroke="#2ea043"/>
+    <text x="130" y="231" fill="#4ade80" text-anchor="middle">MAVLINK · CRSF</text>
+    <rect x="206" y="214" width="112" height="26" rx="13" fill="none" stroke="#2ea043"/>
+    <text x="262" y="231" fill="#4ade80" text-anchor="middle">RTSP VIDEO</text>
+    <rect x="328" y="214" width="130" height="26" rx="13" fill="none" stroke="#2ea043"/>
+    <text x="393" y="231" fill="#4ade80" text-anchor="middle">WEB TELEMETRY</text>
+    <rect x="468" y="214" width="96" height="26" rx="13" fill="none" stroke="#2ea043"/>
+    <text x="516" y="231" fill="#4ade80" text-anchor="middle">MESH</text>
+    <rect x="574" y="214" width="128" height="26" rx="13" fill="none" stroke="#f59e0b" opacity="0.9"/>
+    <text x="638" y="231" fill="#f59e0b" text-anchor="middle">RPi · ROCK 5C</text>
   </g>
 
-  <!-- CTA -->
+  <!-- кнопка -->
   <g font-family="'Courier New', Courier, monospace">
-    <rect x="64" y="258" width="290" height="38" rx="6" fill="#22c55e"/>
-    <text x="209" y="283" font-size="17" font-weight="bold" fill="#06120a" text-anchor="middle" letter-spacing="2">&gt; OPEN REPOSITORY_</text>
-    <text x="380" y="283" font-size="14" fill="#7d8590" letter-spacing="1">GPL-3.0 · v2.2 · Python 3.11+</text>
+    <rect x="64" y="260" width="290" height="38" rx="6" fill="#22c55e"/>
+    <text x="209" y="285" font-size="17" font-weight="bold" fill="#06120a" text-anchor="middle" letter-spacing="2">&gt; OPEN REPOSITORY_</text>
+    <text x="372" y="285" font-size="13" fill="#7d8590" letter-spacing="1">2 НРТК · 3 ПЛАТЫ · Python 3.11+</text>
   </g>
 
-  <!-- rover + radar scene right -->
-  <g transform="translate(790,150)">
-    <circle r="120" fill="none" stroke="#1f3d26" stroke-width="1.5"/>
-    <circle r="84" fill="none" stroke="#1f3d26" stroke-width="1.2"/>
+  <!-- телеметрическая полоса -->
+  <g transform="translate(64,316)">
+    <text x="0" y="4" font-family="'Courier New', Courier, monospace" font-size="10" fill="#7d8590" letter-spacing="1">LINK</text>
+    <g fill="#22c55e">
+      <rect x="40" y="-8" width="4" height="12" opacity="0.8">
+        <animate attributeName="height" values="4;12;6;12" dur="2.3s" repeatCount="indefinite"/>
+        <animate attributeName="y" values="0;-8;-2;-8" dur="2.3s" repeatCount="indefinite"/>
+      </rect>
+      <rect x="48" y="-5" width="4" height="9" opacity="0.7">
+        <animate attributeName="height" values="9;3;11;9" dur="1.9s" repeatCount="indefinite"/>
+        <animate attributeName="y" values="-5;1;-7;-5" dur="1.9s" repeatCount="indefinite"/>
+      </rect>
+      <rect x="56" y="-10" width="4" height="14" opacity="0.9">
+        <animate attributeName="height" values="14;7;14;5" dur="2.7s" repeatCount="indefinite"/>
+        <animate attributeName="y" values="-10;-3;-10;-1" dur="2.7s" repeatCount="indefinite"/>
+      </rect>
+      <rect x="64" y="-6" width="4" height="10" opacity="0.6">
+        <animate attributeName="height" values="10;14;6;10" dur="3.1s" repeatCount="indefinite"/>
+        <animate attributeName="y" values="-6;-10;-2;-6" dur="3.1s" repeatCount="indefinite"/>
+      </rect>
+    </g>
+    <text x="82" y="4" font-family="'Courier New', Courier, monospace" font-size="10" fill="#4ade80" letter-spacing="1">TELEMETRY · RC · VIDEO</text>
+  </g>
+
+  <!-- радар с машиной -->
+  <g transform="translate(806,166)">
+    <circle r="124" fill="none" stroke="#1f3d26" stroke-width="1.5"/>
+    <circle r="86" fill="none" stroke="#1f3d26" stroke-width="1.2"/>
     <circle r="48" fill="none" stroke="#1f3d26" stroke-width="1"/>
+    <line x1="-124" y1="0" x2="124" y2="0" stroke="#1f3d26" stroke-width="0.8"/>
+    <line x1="0" y1="-124" x2="0" y2="124" stroke="#1f3d26" stroke-width="0.8"/>
+
     <g>
-      <path d="M 0 0 L 120 0 A 120 120 0 0 0 84.8 -84.8 Z" fill="#22c55e" opacity="0.1"/>
-      <line x1="0" y1="0" x2="120" y2="0" stroke="#22c55e" stroke-width="1.5" opacity="0.7"/>
+      <path d="M 0 0 L 124 0 A 124 124 0 0 0 87.7 -87.7 Z" fill="url(#rsweep)"/>
+      <line x1="0" y1="0" x2="124" y2="0" stroke="#22c55e" stroke-width="1.5" opacity="0.75"/>
       <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="7s" repeatCount="indefinite"/>
     </g>
-    <circle cx="52" cy="-38" r="4" fill="#22c55e">
+
+    <circle cx="54" cy="-40" r="4" fill="#22c55e">
       <animate attributeName="opacity" values="1;0.15;1" dur="2s" repeatCount="indefinite"/>
     </circle>
-    <circle cx="-60" cy="44" r="3.5" fill="#f59e0b">
+    <circle cx="-62" cy="46" r="3.5" fill="#f59e0b">
       <animate attributeName="opacity" values="0.2;1;0.2" dur="3s" repeatCount="indefinite"/>
     </circle>
+    <circle cx="70" cy="62" r="3" fill="#22c55e" opacity="0.7">
+      <animate attributeName="opacity" values="0.7;0.1;0.7" dur="2.6s" repeatCount="indefinite"/>
+    </circle>
 
-    <!-- rover in center -->
+    <!-- машина в центре -->
     <g transform="translate(-46,-8)" stroke="#4ade80" stroke-width="2.5" fill="none">
       <rect x="0" y="0" width="92" height="26" rx="5"/>
       <circle cx="17" cy="34" r="11"/>
@@ -91,13 +150,20 @@
         <animate attributeName="opacity" values="1;0.2;1" dur="1.6s" repeatCount="indefinite"/>
       </circle>
     </g>
+
+    <!-- подписи дальности -->
+    <g font-family="'Courier New', Courier, monospace" font-size="9" fill="#2ea043" opacity="0.8">
+      <text x="52" y="-6">50</text>
+      <text x="90" y="-6">100</text>
+      <text x="128" y="-6">150</text>
+    </g>
   </g>
 
-  <!-- bottom status -->
+  <!-- нижняя строка состояния -->
   <g font-family="'Courier New', Courier, monospace" font-size="12" fill="#7d8590">
-    <text x="620" y="296" letter-spacing="1">STATUS:</text>
-    <text x="688" y="296" letter-spacing="1" fill="#22c55e">ACTIVE DEVELOPMENT</text>
-    <circle cx="850" cy="292" r="4" fill="#22c55e">
+    <text x="640" y="320" letter-spacing="1">STATUS:</text>
+    <text x="708" y="320" letter-spacing="1" fill="#22c55e">ACTIVE DEVELOPMENT</text>
+    <circle cx="874" cy="316" r="4" fill="#22c55e">
       <animate attributeName="opacity" values="1;0.2;1" dur="1.2s" repeatCount="indefinite"/>
     </circle>
   </g>
