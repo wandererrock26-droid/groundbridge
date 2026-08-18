@@ -2,6 +2,8 @@
 
 <img src="./assets/banner.svg" alt="RoverLink — Ground Control Station for UGVs" width="100%"/>
 
+<img src="./assets/logo.png" alt="Эмблема RoverLink" width="360"/>
+
 </div>
 
 ```
