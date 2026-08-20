@@ -13,14 +13,14 @@
 │  > platforms                                                 │
 │  Raspberry Pi 5 · Raspberry Pi 4 · Radxa ROCK 5C             │
 │  > status                                                    │
-│  ● v2.5-beta8 — BETA — LINK SECURE                             │
+│  ● v2.5 — RELEASED — LINK SECURE                             │
 └──────────────────────────────────────────────────────────────┘
 ```
 
 <div align="center">
 
 [![License](https://img.shields.io/badge/LICENSE-GPL--3.0-0d1117?style=for-the-badge&logo=gnu&logoColor=f59e0b&labelColor=161b22&color=f59e0b)](LICENSE)
-![Version](https://img.shields.io/badge/CORE-v2.5--beta8-0d1117?style=for-the-badge&labelColor=161b22&color=4ade80)
+![Version](https://img.shields.io/badge/CORE-v2.5-0d1117?style=for-the-badge&labelColor=161b22&color=4ade80)
 ![Platform](https://img.shields.io/badge/SBC-Pi_5_%C2%B7_Pi_4_%C2%B7_ROCK_5C-0d1117?style=for-the-badge&labelColor=161b22&color=22c55e)
 ![Python](https://img.shields.io/badge/Python_3.11%2B-0d1117?style=for-the-badge&logo=python&logoColor=4ade80&labelColor=161b22)
 ![Protocols](https://img.shields.io/badge/MAVLink_%E2%86%92_CRSF_%2F_SBUS-0d1117?style=for-the-badge&labelColor=161b22&color=22c55e)
